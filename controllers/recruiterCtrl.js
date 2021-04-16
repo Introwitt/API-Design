@@ -220,6 +220,8 @@ const recruiterCtrl = {
 
             res.json({msg: "Candidate Accepted"});
 
+            // Use 3rd Part API like Mailgun to send mail to the candidate regarding their acceptance using candidate_id.
+
         }catch(err){
             return res.status(500).json({ msg: err.message });
         }
@@ -228,7 +230,6 @@ const recruiterCtrl = {
     rejectCandidate: async(req, res) =>{
         try{
 
-            console.log("hi");
             const recruiter = await Recruiters.findById(req.user.id).select('-password');
             if(!recruiter) return res.status(400).json({msg:"Recruiter doesn't exist"});
 
@@ -243,12 +244,17 @@ const recruiterCtrl = {
 
             res.json({msg: "Candidate Rejected"});
 
+            // Use 3rd Part API like Mailgun to send mail to the candidate regarding their rejection using candidate_id.
+
+
         }catch(err){
             return res.status(500).json({ msg: err.message });
         }
     },
 
 }
+
+// Functions to create tokens for users for their persistent session
 
 const createAccessToken = (user) =>{
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1d'})

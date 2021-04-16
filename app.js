@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const path = require('path');
 const Jobs = require('./models/jobModel');
 const cors = require('cors');
+const serverless = require('serverless-http');
 var app = express();
 
 app.use(express.json());
@@ -27,10 +28,14 @@ mongoose.connect(URI, {
 })
 
 // Routes
+
+// Candidate Routes
 app.use('/candidate', require('./routes/candidateRouter'));
+
+// Recruiter Routes
 app.use('/recruiter', require('./routes/recruiterRouter'));
 
-
+// Home Route to display all the open jobs
 app.get("/", (req, res)=>{
     var openJobs = [];
     Jobs.find({}, function(err, jobs){
@@ -48,9 +53,12 @@ app.get("/", (req, res)=>{
 })
 
 
+// Server Setup
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>{
     console.log('Server is running on port', PORT);
 })
+
+
 
 

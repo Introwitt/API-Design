@@ -117,7 +117,9 @@ const candidateCtrl = {
             if(!candidate) return res.status(400).json({msg:"Candidate doesn't exist"})
 
             const appliedJobs = await Applications.find({candidate_id:candidate._id});
-             
+            
+            // Candidates can use a 3rd party service to create a draft of all the applied jobs.
+
             return res.json({appliedJobs});
             
         } catch(err){
@@ -141,6 +143,8 @@ const candidateCtrl = {
                 candidate_id: candidate._id,
                 recruiter_id: job[0].recruiter_id
             })
+
+            // We can use a 3rd Party API like Mailgun to send e-mail to Recruiter using recruiter-id. 
 
             // Save in DB
             await newApplication.save();
@@ -171,6 +175,9 @@ const candidateCtrl = {
 
 
 }
+
+
+// Functions to create tokens for users for their persistent session
 
 const createAccessToken = (user) =>{
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {expiresIn: '1d'})

@@ -2,6 +2,7 @@ const router = require('express').Router();
 const recruiterCtrl = require('../controllers/recruiterCtrl');
 const auth = require('../middleware/auth');
 
+// Recruiter Routes
 
 router.post('/signup', recruiterCtrl.signup);
 

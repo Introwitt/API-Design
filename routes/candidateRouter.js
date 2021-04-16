@@ -3,6 +3,7 @@ const candidateCtrl = require('../controllers/candidateCtrl');
 const auth = require('../middleware/auth');
 
 
+// Candidate Routes
 router.post('/signup', candidateCtrl.signup);
 
 router.post('/login', candidateCtrl.login);

@@ -1,9 +1,17 @@
 require('dotenv').config();
 var express = require("express");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
+const path = require('path');
+const Jobs = require('./models/jobModel');
+const cors = require('cors');
 var app = express();
 
 app.use(express.json());
+app.use(cookieParser());
+app.use(cors());
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'ejs')
 
 
 // connect to MongoDB
@@ -22,10 +30,23 @@ mongoose.connect(URI, {
 app.use('/candidate', require('./routes/candidateRouter'));
 app.use('/recruiter', require('./routes/recruiterRouter'));
 
+
 app.get("/", (req, res)=>{
-    res.send("Home Page");
+    var openJobs = [];
+    Jobs.find({}, function(err, jobs){
+        if(err){
+            console.log(err);
+        } else{
+            jobs.forEach((job)=>{
+                if(job.status==="open"){
+                    openJobs.push(job);
+                }
+            })
+            res.json({openJobs});
+        }
+    })
 })
 
-app.listen(3000, ()=>{
-    console.log("Server running on port 3000");
+app.listen(5000, ()=>{
+    console.log("Server running on port 5000");
 })

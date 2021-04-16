@@ -173,9 +173,7 @@ const candidateCtrl = {
         }
     }
 
-
 }
-
 
 // Functions to create tokens for users for their persistent session
 
